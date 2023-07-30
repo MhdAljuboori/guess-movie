@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+    a {
+        @apply text-teal-100 underline hover:text-teal-50;
+    }
+
+    .btn-primary {
+        @apply p-1 px-3 rounded-md bg-teal-600 mt-3 hover:bg-teal-500 disabled:opacity-70 disabled:bg-teal-600;
+    }
+
+    .input-control {
+        @apply border p-2 rounded-md outline-none shadow-none;
+    }
+}
