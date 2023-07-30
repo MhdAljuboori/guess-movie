@@ -6,7 +6,8 @@ This project is powered by ChatGPT, used to guess the movie you're trying to rem
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run start:backend`
+### `npm run start:frontend`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
