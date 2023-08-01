@@ -63,7 +63,7 @@ export default class MovieDescription extends Component<IMovieDescriptionProps, 
             <div className='w-full flex flex-col justify-center items-center p-5 text-white'>
                 <div className='flex flex-col w-[35rem] text-center items-center'>
                     <div className='mb-4 opacity-80'>
-                        This app is using <a href='https://openai.com' target='_blank' rel='noreferrer'>GPT 3.5</a> & <a href='https://www.themoviedb.org' target='_blank' rel='noreferrer'>TMDB</a> to get your result, you can find the source code for <a href='#'>this</a> on this Github Repository
+                        This app is using <a href='https://openai.com' target='_blank' rel='noreferrer'>GPT 3.5</a> & <a href='https://www.themoviedb.org' target='_blank' rel='noreferrer'>TMDB</a> to get your result, you can find the source code for <a href='https://github.com/MhdAljuboori/guess-movie' target='_blank' rel='noreferrer'>this</a> on this Github Repository
                     </div>
 
                     <textarea
