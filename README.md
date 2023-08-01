@@ -1,6 +1,6 @@
 # Getting Started
 
-This project is powered by ChatGPT, used to guess the movie you're trying to remember using natural language
+This project is powered by GPT, used to guess the movie you're trying to remember using natural language
 
 ## Available Scripts
 
