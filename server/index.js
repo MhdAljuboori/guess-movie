@@ -26,8 +26,9 @@ app.post('/api/guess-movie', async (req, res) => {
         }
 
         const count = userIPData?.usageCount || 0;
-        if (count >= 3) {
-            return res.send({ error: 'You can\'t make more than 3 requests' });
+        const maximumTries = parseInt(process.env.NUMBER_OF_TRIES);
+        if (count >= maximumTries) {
+            return res.send({ error: `You can\'t make more than ${maximumTries} requests` });
         }
 
         try {
