@@ -7,20 +7,23 @@ export interface IMovieItem {
 
 interface IMoviesListProps {
     movies: IMovieItem[];
+    error: string;
     loading: boolean;
 }
 
 export default class MoviesList extends Component<IMoviesListProps> {
 
     render() {
-        const { movies, loading } = this.props;
+        const { movies, loading, error } = this.props;
 
         return (
             <div className='flex justify-center text-center m-auto'>
                 <div className='flex gap-4 flex-wrap w-[60rem] max-w-full justify-center'>
                     {loading && <div>Thinking...</div>}
 
-                    {!loading && (movies.length > 0 ? movies.map((movie, index) => (
+                    {error && <div className='text-red-500'>{error}</div>}
+
+                    {!loading && !error && (movies.length > 0 ? movies.map((movie, index) => (
                         <div key={index} className='text-white'>
                             {movie.poster && <img className='w-48 rounded-md' src={movie.poster} alt={movie.title} />}
                             {!movie.poster &&

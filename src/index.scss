@@ -14,5 +14,9 @@
 
     .input-control {
         @apply border p-2 rounded-md outline-none shadow-none;
+
+        &.input-sm {
+            @apply p-1 text-sm;
+        }
     }
 }
