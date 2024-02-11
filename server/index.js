@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 app.post('/api/guess-movie', async (req, res) => {
     if (!req.body.apiKey) {
-        const userIP = req.ip;
+        const userIP = req.socket.remoteAddress;
 
         const doc = await getDocument(userIP);
         let userIPData = null;
