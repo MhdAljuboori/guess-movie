@@ -62,7 +62,7 @@ export default class MovieDescription extends Component<IMovieDescriptionProps, 
         const { loading } = this.props;
 
         return (
-            <div className='w-full flex flex-col justify-center items-center p-5 text-white'>
+            <div className='w-full flex flex-col justify-center items-center text-white'>
                 <div className='flex flex-col w-[35rem] text-center items-center'>
                     <div className='opacity-80'>
                         <p className='mb-1'>
