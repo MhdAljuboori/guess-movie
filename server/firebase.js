@@ -5,7 +5,7 @@ const { collection, doc, getDoc, setDoc } = require("firebase/firestore");
 require('dotenv').config();
 
 
-const collectionName = 'user-ip-usage';
+const collectionName = process.env.QUOTA_COLLECTION_NAME ? process.env.QUOTA_COLLECTION_NAME : 'users-quota';
 
 // init firebase
 const firebaseConfig = {
