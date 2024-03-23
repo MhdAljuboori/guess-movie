@@ -56,8 +56,8 @@ export default class Navbar extends Component<INavbarProps, INavbarState> {
         return (
             <div className='flex justify-between items-center bg-slate-900 py-1 px-2'>
                 <div className='text-zinc-300 text-sm'>
-                    If you want to have more than 3 request, you can paste your own OpenAI key
-                    <br/> we won't save your key it will be only used during the request
+                    If you want to have more than the existed free requests, you can paste your own OpenAI key
+                    <br/> we won't save your key, it will be only used during the request
                 </div>
 
                 <input

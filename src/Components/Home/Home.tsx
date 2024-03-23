@@ -79,7 +79,7 @@ export default class Home extends Component<IHomeProps, IHomeState> {
     }
 
     render() {
-        const { searchQuery, movies, loading, error } = this.state;
+        const { searchQuery, movies, loading, error, apiKey } = this.state;
 
         return (
             <div>
@@ -88,9 +88,9 @@ export default class Home extends Component<IHomeProps, IHomeState> {
                 <div className='flex flex-col items-center justify-center'>
                     <div className='p-5'>
                         <div className='pb-2 text-center'>
-                            <UserInfo user={this.props.user} signOut={this.props.signOut} />
+                            <UserInfo user={this.props.user} signOut={this.props.signOut} showQuota={apiKey ? false : true} />
                         </div>
-                        <MovieDescription  loading={loading} searchChanged={this.searchChanged} />
+                        <MovieDescription loading={loading} searchChanged={this.searchChanged} />
                     </div>
                     {searchQuery.length > 0 &&
                         <div className='h-full w-full p-4 overflow-auto bg-slate-950 text-white'>

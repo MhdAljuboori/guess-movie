@@ -3,6 +3,7 @@ const fetch = require("node-fetch");
 const { getDocument, setDocument, getUserById } = require('../firebase');
 
 router.post('/guess-movie', async (req, res) => {
+    let newQuota = null;
     if (!req.body.apiKey) {
         const userId = req.body.userId;
 
@@ -19,15 +20,17 @@ router.post('/guess-movie', async (req, res) => {
 
         const count = userIdData?.usageCount || 0;
         const quota = userIdData?.quota === null || userIdData?.quota === undefined ? parseInt(process.env.NUMBER_OF_TRIES) : userIdData?.quota;
+
         if (quota <= 0) {
             return res.send({ error: `Your quota has been exceeded` });
         }
 
+        newQuota = quota - 1;
         try {
             await setDocument(
                 userId,
                 {
-                    quota: quota - 1,
+                    quota: newQuota,
                     usageCount: count + 1
                 }
             );
@@ -91,7 +94,10 @@ router.post('/guess-movie', async (req, res) => {
 
             }
 
-            res.send(foundMovies);
+            res.send({
+                quota: newQuota,
+                movies: foundMovies
+            });
         } catch (error) {
             console.log(error);
             res.send({ error: 'Could not get movies' });
@@ -100,5 +106,23 @@ router.post('/guess-movie', async (req, res) => {
         console.log(error);
     }
 });
+
+router.get('/get-quota', async (req, res) => {
+    const userId = req.query.userId;
+
+    const user = await getUserById(userId);
+    if (!user) {
+        return res.send({ error: 'User not found' });
+    }
+
+    const doc = await getDocument(userId);
+    let userIdData = null;
+    if (doc.exists()) {
+        userIdData = doc.data();
+    }
+
+    const quota = userIdData?.quota === null || userIdData?.quota === undefined ? parseInt(process.env.NUMBER_OF_TRIES) : userIdData?.quota;
+    res.send({ quota: quota });
+})
 
 module.exports = router;

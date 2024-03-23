@@ -4,12 +4,64 @@ import './UserInfo.scss';
 
 interface IUserInfoProps {
     user?: User;
+    showQuota: boolean;
     signOut: () => void;
 }
 
-export default class UserInfo extends Component<IUserInfoProps, any> {
+interface IUserInfoState {
+    quota: number | null;
+}
 
-    private _renderUserInfo = (user: User) => {
+export default class UserInfo extends Component<IUserInfoProps, IUserInfoState> {
+
+    constructor(props: IUserInfoProps) {
+        super(props);
+
+        this.state = {
+            quota: null
+        };
+    }
+
+    componentDidMount(): void {
+        this._getUserQuota();
+    }
+
+    private _getUserQuota = async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/get-quota?userId=${this.props.user?.uid}`, options)
+        const data = await response.json();
+        this.setState({
+            quota: data.quota,
+        });
+    }
+
+    private _renderQuota = () => {
+        const { quota } = this.state;
+
+        let quotaText = null;
+        if (quota === null) {
+            quotaText = "Loading quota...";
+        } else if (quota === 0) {
+            quotaText = "You have no requests left";
+        } else {
+            quotaText = "You have " + quota + " requests left";
+        }
+
+        return (
+            <div className='text-center font-mono'>
+                { quotaText }
+            </div>
+        )
+    }
+
+    private _renderUserInfo = (user: User, showQuota: boolean) => {
+
         return (
             <div className="user-info text-sm">
                 <div className='flex justify-center gap-2'>
@@ -19,15 +71,16 @@ export default class UserInfo extends Component<IUserInfoProps, any> {
                         (<a href="/" onClick={this.props.signOut}>Sign out</a>)
                     </span>
                 </div>
+                {showQuota && this._renderQuota()}
             </div>
         )
     }
 
     render() {
-        const { user } = this.props;
+        const { user, showQuota } = this.props;
 
         if (user) {
-            return this._renderUserInfo(user);
+            return this._renderUserInfo(user, showQuota);
         }
 
         return null;
