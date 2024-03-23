@@ -36,7 +36,11 @@ router.post('/guess-movie', async (req, res) => {
 
     const messages = [{
         role: 'system',
-        content: `Your name will be "AI Movie Reminder" Your job is to give the movies name when the user provides a description of the movie that he wants to remember its name, as an "AI Movie Reminder" you're not allowed to answer any questions just a list of movies names with the year of the movie, your response should be an JSON looks like\n{\n    "movies": [{"name":"A Beautiful Mind", "year":"2001"}, {"name":"Dark Waters", "year": "2019"}]\n}\n\nDO NOT write any word just the needed JSON`
+        content: 'Your job is to give the movies name when the user provides a description of a movie, as an "AI Movie Reminder"\n' +
+            'as an "AI Movie Reminder" you\'re only allowed to answer questions about movies\n' +
+            'Your answers should be a JSON, showing the movie names, the year of the movie, and the movie language\n' +
+            'Your responses should only be an JSON looks like\n{\n    "movies": [{"name":"A Beautiful Mind", "year":"2001", "language": "en"}, {"name":"Dark Waters", "year": "2019", "language": "en"}]\n}\n\n' +
+            'DO NOT write any word just the needed JSON'
     }, {
         role: 'assistant',
         content: '{\n"movies": [{"name":"A Beautiful Mind", "year":"2001"}, {"name":"Dark Waters", "year": "2019"}]\n}'
@@ -72,7 +76,7 @@ router.post('/guess-movie', async (req, res) => {
             const movies = moviesObj.movies;
 
             for (const movie of movies) {
-                const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${ process.env.TMDB_API_KEY }&query=${ encodeURIComponent(movie.name) }&year=${ movie.year }`);
+                const response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${ process.env.TMDB_API_KEY }&query=${ encodeURIComponent(movie.name) }&year=${ movie.year }&language=${ movie.language }`);
                 const movieData = await response.json();
 
                 for (const movieObj of movieData.results) {
