@@ -56,7 +56,7 @@ router.post('/guess-movie', async (req, res) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                model: 'gpt-3.5-turbo',
+                model: process.env.AI_MODEL ? process.env.AI_MODEL : 'gpt-3.5-turbo',
                 messages: messages,
                 max_tokens: 64,
             })
