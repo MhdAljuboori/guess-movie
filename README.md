@@ -1,24 +1,20 @@
 # Getting Started
 
-This project is powered by GPT, used to guess the movie you're trying to remember using natural language
+This app uses cutting-edge AI to help you recall movie titles! Just describe the plot, and it will search a massive movie database to find your match. Powered by OpenAI's GPT model and themoviedb API, it lets you describe the movie's plot, and it will suggest the movie you're looking for.
 
-## Available Scripts
 
-In the project directory, you can run:
+# Running the App
 
-### `npm run start:backend`
-### `npm run start:frontend`
+The project have backend and fontend both.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+You can run the backend
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`$ npm run start:backend`
 
-### Deployment
+And the frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+`$ npm run start:frontend`
 
-### `npm run build` fails to minify
+# Variable
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Make sure you have set the variable inside `.env` file.
