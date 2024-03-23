@@ -35,8 +35,8 @@ const getUserId = (userId) => {
 
 const getDocument = async (userIp) => {
     try {
-        const userIpDoc = getUserId(userIp);
-        const docSnapshot = await getDoc(userIpDoc);
+        const userIdDoc = getUserId(userIp);
+        const docSnapshot = await getDoc(userIdDoc);
 
         return docSnapshot;
     } catch (error) {
@@ -46,8 +46,8 @@ const getDocument = async (userIp) => {
 
 const setDocument = async (userIp, data) => {
     try {
-        const userIpDoc = getUserId(userIp);
-        await setDoc(userIpDoc, data);
+        const userIdDoc = getUserId(userIp);
+        await setDoc(userIdDoc, data);
     } catch (error) {
         console.error("Error setting document: ", error);
     }
