@@ -18,15 +18,18 @@ router.post('/guess-movie', async (req, res) => {
         }
 
         const count = userIdData?.usageCount || 0;
-        const maximumTries = parseInt(process.env.NUMBER_OF_TRIES);
-        if (count >= maximumTries) {
-            return res.send({ error: `You can\'t make more than ${maximumTries} requests` });
+        const quota = userIdData?.quota === null || userIdData?.quota === undefined ? parseInt(process.env.NUMBER_OF_TRIES) : userIdData?.quota;
+        if (quota <= 0) {
+            return res.send({ error: `Your quota has been exceeded` });
         }
 
         try {
             await setDocument(
                 userId,
-                { usageCount: count + 1 }
+                {
+                    quota: quota - 1,
+                    usageCount: count + 1
+                }
             );
         } catch(e) {
             console.log(e);
