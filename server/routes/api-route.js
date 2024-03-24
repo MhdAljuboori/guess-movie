@@ -47,9 +47,6 @@ router.post('/guess-movie', async (req, res) => {
             'Your answers should be a JSON, showing the movie names, the year of the movie, and the movie language\n' +
             'Your responses should only be an JSON looks like\n{\n    "movies": [{"name":"A Beautiful Mind", "year":"2001", "language": "en"}, {"name":"Dark Waters", "year": "2019", "language": "en"}]\n}\n\n' +
             'DO NOT write any word just the needed JSON'
-    }, {
-        role: 'assistant',
-        content: '{\n"movies": [{"name":"A Beautiful Mind", "year":"2001"}, {"name":"Dark Waters", "year": "2019"}]\n}'
     }];
 
     try {

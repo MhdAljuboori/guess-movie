@@ -15,6 +15,7 @@ interface IHomeState {
     loading: boolean;
     error: string;
     searchQuery: string;
+    quota: number | null;
     apiKey: string | null;
     movies: IMovieItem[];
 }
@@ -26,11 +27,49 @@ export default class Home extends Component<IHomeProps, IHomeState> {
 
         this.state = {
             searchQuery: '',
+            quota: null,
             apiKey: null,
             loading: false,
             error: '',
             movies: []
         };
+    }
+
+    componentDidMount(): void {
+        if (!this.state.apiKey) {
+            this._getUserQuota();
+        }
+    }
+
+    componentDidUpdate(prevProps: IHomeProps, prevState: IHomeState) {
+        if (this.state.apiKey !== prevState.apiKey) {
+            if (this.state.apiKey) {
+                this._resetQuota();
+            } else {
+                this._getUserQuota();
+            }
+        }
+    }
+
+    private _resetQuota = () => {
+        this.setState({
+            quota: null
+        });
+    }
+
+    private _getUserQuota = async () => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        };
+
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/get-quota?userId=${this.props.user?.uid}`, options)
+        const data = await response.json();
+        this.setState({
+            quota: data.quota,
+        });
     }
 
     apiChanged = (apiKey: string | null) => {
@@ -66,7 +105,8 @@ export default class Home extends Component<IHomeProps, IHomeState> {
             const data = await response.json();
             this.setState({
                 error: data.error,
-                movies: data,
+                quota: data.quota,
+                movies: data.movies,
                 loading: false,
             });
         } catch (error) {
@@ -79,7 +119,7 @@ export default class Home extends Component<IHomeProps, IHomeState> {
     }
 
     render() {
-        const { searchQuery, movies, loading, error, apiKey } = this.state;
+        const { searchQuery, movies, loading, error, apiKey, quota } = this.state;
 
         return (
             <div>
@@ -88,7 +128,7 @@ export default class Home extends Component<IHomeProps, IHomeState> {
                 <div className='flex flex-col items-center justify-center'>
                     <div className='p-5'>
                         <div className='pb-2 text-center'>
-                            <UserInfo user={this.props.user} signOut={this.props.signOut} showQuota={apiKey ? false : true} />
+                            <UserInfo user={this.props.user} signOut={this.props.signOut} showQuota={apiKey ? false : true} quota={quota} />
                         </div>
                         <MovieDescription loading={loading} searchChanged={this.searchChanged} />
                     </div>
