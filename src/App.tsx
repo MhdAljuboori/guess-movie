@@ -4,6 +4,8 @@ import Home from './Components/Home/Home';
 import Login from './Components/Login/Login';
 import './App.scss';
 
+import Cookies from 'js-cookie';
+
 interface IAppState {
     user?: User;
 }
@@ -16,7 +18,7 @@ export default class App extends Component<null, IAppState> {
         super(props);
 
         try {
-            const stringifiedUser = localStorage.getItem(this._SIGNED_IN_USER);
+            const stringifiedUser = Cookies.get(this._SIGNED_IN_USER);
             const user = stringifiedUser ? JSON.parse(stringifiedUser) : null;
             if (user) {
                 this.state = {
@@ -35,11 +37,11 @@ export default class App extends Component<null, IAppState> {
             user: user
         });
 
-        localStorage.setItem(this._SIGNED_IN_USER, JSON.stringify(user));
+        Cookies.set(this._SIGNED_IN_USER, JSON.stringify(user));
     }
 
     signOut = () => {
-        localStorage.removeItem(this._SIGNED_IN_USER);
+        Cookies.remove(this._SIGNED_IN_USER);
         this.setState({
             user: undefined
         });
