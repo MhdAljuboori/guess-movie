@@ -3,9 +3,13 @@ const fetch = require("node-fetch");
 const { getDocument, setDocument, getUserById } = require('../firebase');
 
 router.post('/guess-movie', async (req, res) => {
-    let newQuota = null;
+    let userId = null,
+        newQuota = null,
+        count = null;
+
+    // if the user didn't provide an API key, we'll use the user's quota
     if (!req.body.apiKey) {
-        const userId = req.body.userId;
+        userId = req.body.userId;
 
         const user = await getUserById(userId);
         if (!user) {
@@ -18,26 +22,17 @@ router.post('/guess-movie', async (req, res) => {
             userIdData = doc.data();
         }
 
-        const count = userIdData?.usageCount || 0;
+        count = userIdData?.usageCount || 0;
         const quota = userIdData?.quota === null || userIdData?.quota === undefined ? parseInt(process.env.NUMBER_OF_TRIES) : userIdData?.quota;
 
         if (quota <= 0) {
-            return res.send({ error: `Your quota has been exceeded` });
+            return res.send({
+                quota: 0,
+                error: `Your quota has been exceeded`
+            });
         }
 
         newQuota = quota - 1;
-        try {
-            await setDocument(
-                userId,
-                {
-                    quota: newQuota,
-                    usageCount: count + 1
-                }
-            );
-        } catch(e) {
-            console.log(e);
-            return res.send({ error: 'Database error' });
-        }
     }
 
     const messages = [{
@@ -89,6 +84,21 @@ router.post('/guess-movie', async (req, res) => {
                     });
                 }
 
+            }
+
+            if (userId) {
+                // set new quota
+                try {
+                    await setDocument(
+                        userId,
+                        {
+                            quota: newQuota,
+                            usageCount: count + 1
+                        }
+                    );
+                } catch(e) {
+                    console.log(e);
+                }
             }
 
             res.send({

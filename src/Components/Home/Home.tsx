@@ -103,12 +103,23 @@ export default class Home extends Component<IHomeProps, IHomeState> {
             });
             const response = await fetch(`${process.env.REACT_APP_API_URL}/api/guess-movie`, options)
             const data = await response.json();
-            this.setState({
-                error: data.error,
-                quota: data.quota,
-                movies: data.movies,
-                loading: false,
-            });
+            if (data.error) {
+                const quota = data.quota !== null && data.quota !== undefined ?
+                    data.quota :
+                    this.state.quota;
+
+                this.setState({
+                    error: data.error,
+                    quota: quota,
+                    loading: false,
+                });
+            } else {
+                this.setState({
+                    quota: data.quota,
+                    movies: data.movies,
+                    loading: false,
+                });
+            }
         } catch (error) {
             console.error(error);
             this.setState({
