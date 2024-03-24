@@ -23,7 +23,25 @@ export default class UserInfo extends Component<IUserInfoProps, IUserInfoState> 
     }
 
     componentDidMount(): void {
-        this._getUserQuota();
+        if (this.props.showQuota) {
+            this._getUserQuota();
+        }
+    }
+
+    componentDidUpdate(prevProps: IUserInfoProps) {
+        if (this.props.showQuota !== prevProps.showQuota) {
+            if (this.props.showQuota) {
+                this._getUserQuota();
+            } else {
+                this._resetQuota();
+            }
+        }
+    }
+
+    private _resetQuota = () => {
+        this.setState({
+            quota: null
+        });
     }
 
     private _getUserQuota = async () => {
